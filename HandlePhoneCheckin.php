@@ -20,6 +20,7 @@ $module->emDebug('--- Incoming Call to Twilio ---');
  * This is called from Twilio Webhook set up from the calling number
  */
 
+$response = new \Services_Twilio_Twiml();
 
 //$webhook = $module->getUrl("ImpactPhoneCheckin.php", true, true);
 //$module->emDebug($webhook);
@@ -55,10 +56,12 @@ if (!$rec_id) {
     $to =$module->getProjectSetting('email-to');
     $from = $module->getProjectSetting('email-from');
     $subject = $module->getProjectSetting('forwarding-email-subject');
-    $msg = "We have received a call from a phone number that is not in the project: " . $from_10 . ".<br>" .
-        "BODY OF TEXT: ".$body ;
+    $msg = "We have received a call from a phone number that is not in the project: " . $from_10;
 
     $module->sendEmail($to, $from, $subject, $msg);
+
+    $response->say("This number is not recognized.", array('voice' => 'alice'));
+    print $response;
 
     exit();
 }
@@ -68,19 +71,10 @@ $module->emDebug("Call received from phone " . $from_10 . ".  Checking in ". $re
 //Check in a new session for today for this record.
 $checkin_status = $module->checkInSession($rec_id);
 
-
-//TODO: should this be logged or emailed?  Email for now
-    // email coordinator to let them know
-$to =$module->getProjectSetting('email-to');
-$from = $module->getProjectSetting('email-from');
-$subject = $module->getProjectSetting('forwarding-email-subject');
 $msg = "We have received phone checkin from: ".
     "<br>PHONE NUMBER: " . $from_10 .
-    "<br>RECORD_ID: " . $rec_id .
-    "<br>PROJECT ID: " . $pid;
-$msg .= "\nSTATUS: ".$checkin_status;
-
-$module->sendEmail($to, $from, $subject, $msg);
+    "<br>RECORD_ID: " . $rec_id ;
+$msg .= "\nSTATUS: ".$checkin_status['MESSAGE'];
 
 //If log field is specified, log to REDCap
 $log_field = $module->getProjectSetting('log-field');
@@ -93,7 +87,11 @@ if (isset($log_field)) {
     $module->emDebug($rec_id . " : ". $msg);
 }
 
-$response = new \Services_Twilio_Twiml();
-$response->say("hello world! You have been checked in as $rec_id", array('voice' => 'alice'));
-print $response;
+if ($checkin_status['STATUS']) {
+    $response->say("hello! You have been checked in as $rec_id", array('voice' => 'alice'));
+    print $response;
+} else {
+    $response->say($checkin_status['MESSAGE'], array('voice' => 'alice'));
+    print $response;
+}
 

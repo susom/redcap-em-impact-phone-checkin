@@ -79,13 +79,13 @@
     },
     {
       "key": "handle-incoming-call",
-      "name": "Handle Incoming Text<br>Do you want this EM to forward texts to your email?",
+      "name": "Notify Unknown Numbers<br>Do you want this EM to notify you of unknown numbers to an email?",
       "required": false,
       "type": "checkbox"
     },
     {
       "key": "email-to",
-      "name": "Forward texts to this email",
+      "name": "Send unknown calls to this email",
       "required": true,
       "type": "text",
       "branchingLogic": {
