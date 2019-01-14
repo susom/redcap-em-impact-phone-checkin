@@ -6,7 +6,7 @@ namespace Stanford\ImpactPhoneCheckin;
 
 // this line loads the library
 //require __DIR__ . '/vendor/autoload.php';
-require_once $module->getModulePath().'/vendor/autoload.php';
+require_once $module->getModulePath().'vendor/autoload.php';
 
 use Twilio\TwiML;
 use REDCap;
