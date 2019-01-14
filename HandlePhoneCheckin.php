@@ -5,10 +5,12 @@ namespace Stanford\ImpactPhoneCheckin;
 // Get the PHP helper library from https://twilio.com/docs/libraries/php
 
 // this line loads the library
-//require __DIR__ . '/vendor/autoload.php';
-require_once $module->getModulePath().'vendor/autoload.php';
+//require_once __DIR__ . '/vendor/autoload.php';
+//require_once $module->getModulePath().'/vendor/autoload.php';
 
-use Twilio\TwiML;
+require_once APP_PATH_DOCROOT . "/Libraries/Twilio/Services/Twilio.php";
+
+//use Twilio\TwiML;
 use REDCap;
 
 $module->emDebug('--- Incoming Call to Twilio ---');
@@ -91,14 +93,7 @@ if (isset($log_field)) {
     $module->emDebug($rec_id . " : ". $msg);
 }
 
-$response = new TwiML;
+$response = new \Services_Twilio_Twiml();
 $response->say("hello world! You have been checked in as $rec_id", array('voice' => 'alice'));
 print $response;
-
-$response = new TwiML();
-$response->say("Never gonna give you up, {$city}!", array('voice' => 'alice'));
-$response->play("https://demo.twilio.com/docs/classic.mp3");
-
-echo $response;
-
 
