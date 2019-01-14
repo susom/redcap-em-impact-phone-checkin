@@ -1,0 +1,134 @@
+{
+  "name": "Impact Phone Checkin",
+  "namespace": "Stanford\\ImpactPhoneCheckin",
+  "description": "Module that allows phone checkin from Impact and StrongD exercise locations",
+  "authors": [
+    {
+      "name": "Jae Lee",
+      "email": "jael@stanford.edu",
+      "institution": "Stanford University"
+    }
+  ],
+  "permissions": [
+    ""
+  ],
+  "links": {
+    "project": [
+      {
+        "name": "ImpactPhoneCheckin: Get webhook URL",
+        "icon": "gear",
+        "url": "GetWebhookURL.php"
+      }
+    ]
+  },
+  "no-auth-pages": [
+    "HandlePhoneCheckin"
+  ],
+  "crons": [
+  ],
+  "system-settings": [
+  ],
+  "project-settings": [
+    {
+      "key": "enable-project-debug-logging",
+      "name": "<b>Enable Debug Logging</b>",
+      "required": false,
+      "type": "checkbox"
+    },
+    {
+      "key": "phone-lookup-field",
+      "name": "Lookup phone number in this field",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "phone-lookup-field-event",
+      "name": "Event where phone field is located",
+      "required": true,
+      "type": "event-list"
+    },
+    {
+      "key": "exercise-checkin-event",
+      "name": "Event where checkin/metadata form is located",
+      "required": true,
+      "type": "event-list"
+    },
+    {
+      "key": "exercise-fk-field",
+      "name": "Field of foreign key (participant ID)",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "exercise-date-field",
+      "name": "Date of checkin field",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "exercise-checkin-timestamp-field",
+      "name": "Timestamp of checkin field",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "exercise-phone-checkin-field",
+      "name": "Field to indicate that this was a phone checkin",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "handle-incoming-call",
+      "name": "Handle Incoming Text<br>Do you want this EM to forward texts to your email?",
+      "required": false,
+      "type": "checkbox"
+    },
+    {
+      "key": "email-to",
+      "name": "Forward texts to this email",
+      "required": true,
+      "type": "text",
+      "branchingLogic": {
+        "field": "handle-incoming-call",
+        "value": "1"
+      }
+    },
+    {
+      "key": "email-from",
+      "name": "Send email from this email address",
+      "required": true,
+      "type": "text",
+      "branchingLogic": {
+        "field": "handle-incoming-call",
+        "value": "1"
+      }
+    },
+    {
+      "key": "forwarding-email-subject",
+      "name": "Specify subject of email",
+      "required": true,
+      "type": "text",
+      "branchingLogic": {
+        "field": "handle-incoming-call",
+        "value": "1"
+      }
+    },
+    {
+      "key": "log-field",
+      "name": "If you want to log this incoming call, specify the field",
+      "required": false,
+      "type": "field-list"
+    },
+    {
+      "key": "log-field-event",
+      "name": "If you want to log this text receipt, specify the event where the log field is located",
+      "required": false,
+      "type": "event-list",
+      "branchingLogic": {
+        "field": "log-field",
+        "op": "<>",
+        "value": ""
+      }
+    }
+  ]
+}
